@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dcecf8"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d7eaf7"/></linearGradient>
+  <filter id="paper"><feTurbulence baseFrequency=".035" numOctaves="3" seed="8" result="n"/><feBlend in="SourceGraphic" in2="n" mode="soft-light"/></filter>
+</defs>
+<rect width="800" height="1200" fill="url(#bg)"/>
+<rect x="20" y="20" width="760" height="1160" rx="18" fill="#ffffff" fill-opacity=".5" stroke="#b19a76" stroke-opacity=".35"/>
+<g transform="translate(400 125)">
+  <rect x="-20" y="-55" width="40" height="160" rx="3" fill="#9a7447"/>
+  <rect x="-75" y="-5" width="150" height="40" rx="3" fill="#9a7447"/>
+  <g fill="#8bb8d9" stroke="#315a91" stroke-width="3">
+    <circle cx="0" cy="-12" r="26"/><circle cx="-30" cy="18" r="22"/><circle cx="30" cy="18" r="22"/>
+  </g>
+  <g fill="none" stroke="#719a68" stroke-width="7" stroke-linecap="round"><path d="M-55 55Q-100 10-115-35"/><path d="M55 55Q100 10 115-35"/><path d="M-45 60Q-85 55-105 80"/><path d="M45 60Q85 55 105 80"/></g>
+</g>
+<text x="400" y="330" text-anchor="middle" fill="#2d4f80" font-size="92" font-family="cursive" font-style="italic">Máximo</text>
+<text x="400" y="390" text-anchor="middle" fill="#b19a76" font-size="38" font-family="Georgia,serif" letter-spacing="4">MI BAUTIZO</text>
+<text x="400" y="455" text-anchor="middle" fill="#46566b" font-size="24" font-family="Arial,sans-serif">Acompáñanos en este día tan especial</text>
+<text x="400" y="490" text-anchor="middle" fill="#46566b" font-size="24" font-family="Arial,sans-serif">lleno de fe, amor y bendiciones.</text>
+<line x1="210" y1="525" x2="590" y2="525" stroke="#b19a76" stroke-width="2"/>
+<text x="400" y="565" text-anchor="middle" fill="#b19a76" font-size="31" font-family="Georgia,serif">SÁBADO  |  24  |  OCTUBRE</text>
+<line x1="210" y1="590" x2="590" y2="590" stroke="#b19a76" stroke-width="2"/>
+<text x="400" y="635" text-anchor="middle" fill="#b19a76" font-size="30" font-family="Georgia,serif">HORA: 11:00 AM</text>
+<g text-anchor="middle">
+  <text x="230" y="705" fill="#315a91" font-size="32" font-family="cursive" font-style="italic">Mis Papás</text>
+  <text x="230" y="740" fill="#2d4f80" font-size="19" font-family="Georgia,serif">XIOMARA Y CARLOS</text>
+  <text x="570" y="705" fill="#315a91" font-size="32" font-family="cursive" font-style="italic">Mis Padrinos</text>
+  <text x="570" y="740" fill="#2d4f80" font-size="19" font-family="Georgia,serif">MARTHA Y FERNANDO</text>
+</g>
+<g transform="translate(120 820)" stroke="#2d4f80" stroke-width="7" fill="none" stroke-linejoin="round">
+  <path d="M0 90L80 25L160 90V185H0Z"/><path d="M50 185V125Q80 90 110 125V185"/><path d="M80 25V0M65 12H95"/>
+</g>
+<text x="325" y="850" fill="#2d4f80" font-size="25" font-family="Arial,sans-serif" font-weight="700">Parroquia del Sagrado Corazón</text>
+<text x="325" y="885" fill="#2d4f80" font-size="25" font-family="Arial,sans-serif" font-weight="700">de Jesús (Santa Clara)</text>
+<text x="325" y="925" fill="#46566b" font-size="18" font-family="Arial,sans-serif">Jardín Guerrero No. 8 (esquina con las calles</text>
+<text x="325" y="952" fill="#46566b" font-size="18" font-family="Arial,sans-serif">Madero y Allende), Col. Centro, C.P. 76000,</text>
+<text x="325" y="979" fill="#46566b" font-size="18" font-family="Arial,sans-serif">Querétaro, Qro.</text>
+<g fill="#8fb9d8" opacity=".8">
+ <circle cx="55" cy="1060" r="24"/><circle cx="95" cy="1035" r="18"/><circle cx="125" cy="1075" r="28"/><circle cx="165" cy="1045" r="18"/>
+</g>
+<g fill="none" stroke="#719a68" stroke-width="5" stroke-linecap="round"><path d="M30 1160Q100 1070 190 1030"/><path d="M70 1140Q50 1090 45 1040"/><path d="M120 1110Q145 1070 180 1060"/></g>
+<text x="520" y="1080" text-anchor="middle" fill="#315a91" font-size="14" font-family="Arial,sans-serif">*EN CASO DE CAMBIO DE PARROQUIA Y HORARIO,</text>
+<text x="520" y="1103" text-anchor="middle" fill="#315a91" font-size="14" font-family="Arial,sans-serif">SE AVISARÁ CON ANTICIPACIÓN.</text>
+<text x="520" y="1126" text-anchor="middle" fill="#315a91" font-size="14" font-family="Arial,sans-serif">LA FECHA SEGUIRÁ SIENDO LA MISMA.</text>
+</svg>
