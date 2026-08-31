@@ -1,22 +1,53 @@
 import fs from 'node:fs';
-const file='index.html';
-let html=fs.readFileSync(file,'utf8');
-if(!html.includes('data-companion-ui="v2"')){
-const css=`<style data-companion-ui="v2">.companion-manager{margin-top:6px;padding:14px;border:1px solid #eadfc9;border-radius:16px;background:rgba(255,250,240,.72)}.companion-manager-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.companion-manager-title{font:700 .68rem Montserrat,Arial,sans-serif;letter-spacing:.08em;color:#315889}.companion-manager-help{display:block;font:400 .58rem/1.4 Montserrat,Arial,sans-serif;letter-spacing:0;color:#718095;margin-top:3px}.companion-add{border:0;border-radius:999px;padding:9px 12px;background:#315889;color:#fff;font:700 .58rem Montserrat,Arial,sans-serif;letter-spacing:.04em;cursor:pointer;white-space:nowrap}.companion-list{display:grid;gap:8px}.companion-item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center}.companion-item input{width:100%;margin:0!important}.companion-kind{display:flex;gap:4px}.companion-kind button{border:1px solid #d9e3ec;border-radius:10px;background:#fff;color:#315889;padding:9px 8px;font:600 .56rem Montserrat,Arial,sans-serif;cursor:pointer}.companion-kind button.active{background:#eaf5fc;border-color:#9fc2dd}.companion-remove{width:34px;height:34px;border:0;border-radius:50%;background:#f7e6df;color:#ef7950;font-size:18px;cursor:pointer}.companion-total{text-align:right;margin-top:9px;font:600 .6rem Montserrat,Arial,sans-serif;color:#718095}.party-time-card{max-width:590px;margin:26px auto 10px;padding:17px 22px 15px;text-align:center;border:1px solid rgba(180,154,114,.38);border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 12px 30px rgba(49,88,137,.08)}.party-time-card .time-kicker{display:block;color:#b49a72;font:700 .56rem Montserrat,Arial,sans-serif;letter-spacing:.22em}.party-time-card .time-value{display:block;margin-top:6px;color:#315889;font:800 clamp(1.45rem,5vw,2.05rem) Montserrat,Arial,sans-serif;letter-spacing:.02em}.party-time-card .time-note{display:block;margin-top:5px;color:#718095;font:500 .68rem/1.5 Montserrat,Arial,sans-serif}.party-family{max-width:590px;margin:10px auto 28px;padding:13px 12px 12px;text-align:center;border-top:1px solid rgba(49,88,137,.13);border-bottom:1px solid rgba(49,88,137,.13)}.party-family-label{display:block;color:#ef7950;font:800 .52rem Montserrat,Arial,sans-serif;letter-spacing:.2em}.party-family-names{margin-top:6px;color:#315889;font:600 .78rem/1.55 'Cormorant Garamond',Georgia,serif}.party-family-names span{white-space:nowrap}.party-family-names .dot{color:#b49a72;padding:0 6px}@media(max-width:600px){.companion-manager-head{align-items:flex-start;flex-direction:column}.companion-add{width:100%}.companion-item{grid-template-columns:minmax(0,1fr) auto}.companion-kind{grid-column:1}.companion-remove{grid-column:2;grid-row:1/3;align-self:center}.party-time-card{margin-left:6px;margin-right:6px;padding:16px 13px 14px}.party-time-card .time-value{font-size:1.25rem}.party-family{margin-left:6px;margin-right:6px}.party-family-names{font-size:.71rem}.party-family-names span{white-space:normal}.party-family-names .dot{padding:0 3px}}</style>`;
-const js=`<script data-companion-ui="v2">(()=>{const f=document.getElementById('rsvpForm');if(!f)return;const n=f.querySelector('textarea[name="acompanantes"]'),m=f.querySelector('input[name="menores_18"]');if(!n||!m)return;const nl=n.closest('label'),ml=m.closest('label');if(nl)nl.style.display='none';if(ml)ml.style.display='none';const b=document.createElement('div');b.className='companion-manager';b.innerHTML='<div class="companion-manager-head"><div><div class="companion-manager-title">ACOMPAÑANTES</div><span class="companion-manager-help">Agrega a cada persona por separado.</span></div><button type="button" class="companion-add">+ AGREGAR ACOMPAÑANTE</button></div><div class="companion-list"></div><div class="companion-total">0 acompañantes · 0 adultos · 0 menores</div>';nl.before(b);const list=b.querySelector('.companion-list'),add=b.querySelector('.companion-add'),tot=b.querySelector('.companion-total');let p=[];function render(){list.innerHTML='';p.forEach((x,i)=>{const r=document.createElement('div');r.className='companion-item';r.innerHTML='<input type="text" maxlength="120" placeholder="Nombre del acompañante"><div class="companion-kind"><button type="button">Adulto</button><button type="button">Menor</button></div><button type="button" class="companion-remove" aria-label="Eliminar acompañante">×</button>';const inp=r.querySelector('input'),bs=r.querySelectorAll('.companion-kind button');inp.value=x.nombre;bs[0].classList.toggle('active',!x.es_menor);bs[1].classList.toggle('active',x.es_menor);inp.oninput=()=>{p[i].nombre=inp.value;update()};bs[0].onclick=()=>{p[i].es_menor=false;render()};bs[1].onclick=()=>{p[i].es_menor=true;render()};r.querySelector('.companion-remove').onclick=()=>{p.splice(i,1);render()};list.appendChild(r)});update()}function update(){const mi=p.filter(x=>x.es_menor).length,ad=p.length-mi;tot.textContent=p.length+' acompañante'+(p.length===1?'':'s')+' · '+ad+' adulto'+(ad===1?'':'s')+' · '+mi+' menor'+(mi===1?'':'es')}add.onclick=()=>{if(p.length<20){p.push({nombre:'',es_menor:false});render();list.lastElementChild?.querySelector('input')?.focus()}};f.addEventListener('submit',()=>{p=p.filter(x=>x.nombre.trim());n.value=JSON.stringify(p);m.value=String(p.filter(x=>x.es_menor).length)},{capture:true});render()})();</script>`;
-html=html.replace('</style>',css+'</style>');html=html.replace('</body>',js+'</body>');fs.writeFileSync(file,html,'utf8');
+
+const indexFile = 'index.html';
+let index = fs.readFileSync(indexFile, 'utf8');
+
+if (!index.includes('data-companion-ui="v3"')) {
+  const css = [
+    '<style data-companion-ui="v3">',
+    '.companion-manager{margin-top:8px;padding:15px;border:1px solid #eadfc9;border-radius:18px;background:rgba(255,250,240,.78)}',
+    '.companion-manager-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}',
+    '.companion-manager-title{font:700 .68rem Montserrat,Arial,sans-serif;letter-spacing:.08em;color:#315889}',
+    '.companion-manager-help{display:block;font:400 .58rem/1.4 Montserrat,Arial,sans-serif;color:#718095;margin-top:3px}',
+    '.companion-add{border:0;border-radius:999px;padding:9px 12px;background:#315889;color:#fff;font:700 .58rem Montserrat,Arial,sans-serif;cursor:pointer;white-space:nowrap}',
+    '.companion-list{display:grid;gap:8px}.companion-item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center}',
+    '.companion-item input{width:100%;margin:0!important}.companion-kind{display:flex;gap:4px}',
+    '.companion-kind button{border:1px solid #d9e3ec;border-radius:10px;background:#fff;color:#315889;padding:9px 8px;font:600 .56rem Montserrat,Arial,sans-serif;cursor:pointer}',
+    '.companion-kind button.active{background:#eaf5fc;border-color:#9fc2dd}',
+    '.companion-remove{width:34px;height:34px;border:0;border-radius:50%;background:#f7e6df;color:#ef7950;font-size:18px;cursor:pointer}',
+    '.companion-total{text-align:right;margin-top:9px;font:600 .6rem Montserrat,Arial,sans-serif;color:#718095}',
+    '@media(max-width:600px){.companion-manager-head{align-items:flex-start;flex-direction:column}.companion-add{width:100%}.companion-item{grid-template-columns:minmax(0,1fr) auto}.companion-kind{grid-column:1}.companion-remove{grid-column:2;grid-row:1/3;align-self:center}}',
+    '</style>'
+  ].join('');
+
+  const js = [
+    '<script data-companion-ui="v3">',
+    '(()=>{',
+    'const f=document.getElementById("rsvpForm");if(!f)return;',
+    'const n=f.querySelector("textarea[name=acompanantes]"),m=f.querySelector("input[name=menores_18]");if(!n||!m)return;',
+    'const nl=n.closest("label"),ml=m.closest("label");if(nl)nl.style.display="none";if(ml)ml.style.display="none";',
+    'const b=document.createElement("div");b.className="companion-manager";',
+    'b.innerHTML="<div class=\"companion-manager-head\"><div><div class=\"companion-manager-title\">ACOMPAÑANTES</div><span class=\"companion-manager-help\">Agrega a cada persona por separado.</span></div><button type=\"button\" class=\"companion-add\">+ AGREGAR ACOMPAÑANTE</button></div><div class=\"companion-list\"></div><div class=\"companion-total\">0 acompañantes · 0 adultos · 0 menores</div>";',
+    'nl.before(b);',
+    'const list=b.querySelector(".companion-list"),add=b.querySelector(".companion-add"),tot=b.querySelector(".companion-total");let p=[];',
+    'function update(){const mi=p.filter(x=>x.es_menor).length,ad=p.length-mi;tot.textContent=`${p.length} acompañante${p.length===1?"":"s"} · ${ad} adulto${ad===1?"":"s"} · ${mi} menor${mi===1?"":"es"}`}',
+    'function render(){list.innerHTML="";p.forEach((x,i)=>{const r=document.createElement("div");r.className="companion-item";r.innerHTML="<input type=\"text\" maxlength=\"120\" placeholder=\"Nombre del acompañante\"><div class=\"companion-kind\"><button type=\"button\">Adulto</button><button type=\"button\">Menor</button></div><button type=\"button\" class=\"companion-remove\">×</button>";const inp=r.querySelector("input"),bs=r.querySelectorAll(".companion-kind button");inp.value=x.nombre;bs[0].classList.toggle("active",!x.es_menor);bs[1].classList.toggle("active",x.es_menor);inp.oninput=()=>{p[i].nombre=inp.value;update()};bs[0].onclick=()=>{p[i].es_menor=false;render()};bs[1].onclick=()=>{p[i].es_menor=true;render()};r.querySelector(".companion-remove").onclick=()=>{p.splice(i,1);render()};list.appendChild(r)});update()}',
+    'add.onclick=()=>{if(p.length<20){p.push({nombre:"",es_menor:false});render();list.lastElementChild?.querySelector("input")?.focus()}};',
+    'f.addEventListener("submit",()=>{p=p.filter(x=>x.nombre.trim());n.value=JSON.stringify(p);m.value=String(p.filter(x=>x.es_menor).length)},{capture:true});',
+    'render();})();',
+    '</script>'
+  ].join('');
+
+  index = index.replace('</style>', css + '</style>');
+  index = index.replace('</body>', js + '</body>');
+  fs.writeFileSync(indexFile, index, 'utf8');
 }
 
-const invitationFile='invitation.html';
-let invitation=fs.readFileSync(invitationFile,'utf8');
-invitation=invitation.replace('XIOMARA Y CARLOS','XIOMARA SANTOS Y CARLOS ZUÑIGA');
-invitation=invitation.replace('MARTHA Y FERNANDO','MARTHA ACOSTA Y FERNANDO AGUILAR');
-if(!invitation.includes('data-party-time="v2"')){
-  const partyCss='<style data-party-time="v2">.party-time-card{max-width:590px;margin:26px auto 10px;padding:17px 22px 15px;text-align:center;border:1px solid rgba(180,154,114,.38);border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 12px 30px rgba(49,88,137,.08)}.party-time-card .time-kicker{display:block;color:#b49a72;font:700 .56rem Montserrat,Arial,sans-serif;letter-spacing:.22em}.party-time-card .time-value{display:block;margin-top:6px;color:#315889;font:800 clamp(1.45rem,5vw,2.05rem) Montserrat,Arial,sans-serif;letter-spacing:.02em}.party-time-card .time-note{display:block;margin-top:5px;color:#718095;font:500 .68rem/1.5 Montserrat,Arial,sans-serif}.party-family{max-width:590px;margin:10px auto 28px;padding:13px 12px 12px;text-align:center;border-top:1px solid rgba(49,88,137,.13);border-bottom:1px solid rgba(49,88,137,.13)}.party-family-label{display:block;color:#ef7950;font:800 .52rem Montserrat,Arial,sans-serif;letter-spacing:.2em}.party-family-names{margin-top:6px;color:#315889;font:600 .78rem/1.55 'Cormorant Garamond',Georgia,serif}.party-family-names span{white-space:nowrap}.party-family-names .dot{color:#b49a72;padding:0 6px}@media(max-width:600px){.party-time-card{margin-left:6px;margin-right:6px;padding:16px 13px 14px}.party-time-card .time-value{font-size:1.25rem}.party-family{margin-left:6px;margin-right:6px}.party-family-names{font-size:.71rem}.party-family-names span{white-space:normal}.party-family-names .dot{padding:0 3px}}</style>';
-  invitation=invitation.replace('</style>',partyCss+'</style>');
-  const old='<p class="party-copy">La celebración continúa. Acompáñanos a festejar el cumpleaños de Máximo con mucha alegría.</p><div class="party-time-card" data-party-time="v1"><span class="time-kicker">FIESTA</span><span class="time-value">A PARTIR DE LAS 2:00 P.M.</span><span class="time-note">Te esperamos para comenzar el festejo.</span></div>';
-  const panel='<p class="party-copy">La celebración continúa. Acompáñanos a festejar el cumpleaños de Máximo con mucha alegría.</p><div class="party-time-card" data-party-time="v2"><span class="time-kicker">HORA DE LA FIESTA</span><span class="time-value">A PARTIR DE LAS 3:00 P.M.</span><span class="time-note">Te esperamos para comenzar el festejo.</span></div><div class="party-family"><span class="party-family-label">CON CARIÑO DE SUS FAMILIAS</span><div class="party-family-names"><span>Xiomara Santos</span><span class="dot">·</span><span>Carlos Zuñiga</span><span class="dot">·</span><span>Martha Acosta</span><span class="dot">·</span><span>Fernando Aguilar</span></div></div>';
-  if(invitation.includes(old)) invitation=invitation.replace(old,panel);
-  else invitation=invitation.replace('<p class="party-copy">La celebración continúa. Acompáñanos a festejar el cumpleaños de Máximo con mucha alegría.</p>',panel);
-}
-fs.writeFileSync(invitationFile,invitation,'utf8');
+const invitationFile = 'invitation.html';
+let invitation = fs.readFileSync(invitationFile, 'utf8');
+invitation = invitation.replaceAll('A PARTIR DE LAS 2:00 P.M.', 'A PARTIR DE LAS 3:00 P.M.');
+invitation = invitation.replaceAll('2:00 P.M.', '3:00 P.M.');
+invitation = invitation.replace('XIOMARA Y CARLOS', 'XIOMARA SANTOS Y CARLOS ZUÑIGA');
+invitation = invitation.replace('MARTHA Y FERNANDO', 'MARTHA ACOSTA Y FERNANDO AGUILAR');
+fs.writeFileSync(invitationFile, invitation, 'utf8');
