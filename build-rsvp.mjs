@@ -16,7 +16,9 @@ function injectCompanions(file){
   }
 }
 
-injectCompanions('welcome.html');
+// El formulario RSVP vive directamente en index.html.
+// No modificar welcome.html: contiene la pantalla de bienvenida y la capa del RSVP.
+injectCompanions('index.html');
 
 const invitationFile='invitation.html';
 let invitation=fs.readFileSync(invitationFile,'utf8');
