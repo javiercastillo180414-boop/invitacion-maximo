@@ -13,15 +13,13 @@ invitation = invitation.replaceAll('MARTHA Y FERNANDO', 'MARTHA ACOSTA Y FERNAND
 invitation = invitation.replaceAll('A PARTIR DE LAS 2:00 P.M.', 'A PARTIR DE LAS 3:00 P.M.');
 invitation = invitation.replaceAll('2:00 P.M.', '3:00 P.M.');
 
-// Remove every previous generated party-time element before inserting one.
-// This deliberately removes individual child elements as well, so a partial
-// poster from an older build can never survive into the next build.
+// Remove every previous generated party-time block before inserting one.
+// The poster is always located immediately before the existing party video,
+// so this removes the entire generated block even when it contains nested HTML.
 invitation = invitation.replace(/<style data-party-time="[^"]*">[\s\S]*?<\/style>/g, '');
-invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-poster[^"]*"[^>]*>[\s\S]*?<\/div>/g, '');
-invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-card[^"]*"[^>]*>[\s\S]*?<\/div>/g, '');
-invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-text[^"]*"[^>]*>[\s\S]*?<\/div>/g, '');
-invitation = invitation.replace(/<span[^>]*class="[^"]*poster-(?:kicker|title|time|note)[^"]*"[^>]*>[\s\S]*?<\/span>/g, '');
-invitation = invitation.replace(/<div[^>]*class="[^"]*poster-rule[^"]*"[^>]*>[\s\S]*?<\/div>/g, '');
+invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-poster[^"]*"[^>]*>[\s\S]*?(?=<video class="party-video")/g, '');
+invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-card[^"]*"[^>]*>[\s\S]*?(?=<video class="party-video")/g, '');
+invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-text[^"]*"[^>]*>[\s\S]*?(?=<video class="party-video")/g, '');
 
 // One standalone party-time poster. The existing birthday heading remains
 // untouched; this block communicates only the party start time.
