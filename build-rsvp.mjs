@@ -45,6 +45,14 @@ invitation = invitation.replace(/<script>const modal=document\.getElementById\('
 const rsvpScript = `<script data-rsvp-route="v2">(()=>{const wire=()=>{document.querySelectorAll('.confirm button').forEach(btn=>{if(btn.dataset.rsvpRoute)return;btn.dataset.rsvpRoute='1';btn.type='button';btn.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();window.location.href='/rsvp.html'},true)})};wire();new MutationObserver(wire).observe(document.body,{childList:true,subtree:true})})();</script>`;
 if (!invitation.includes('data-rsvp-route="v2"')) invitation = invitation.replace('</body>', rsvpScript + '</body>');
 
+// Force the party video to be permanently silent on every build.
+invitation = invitation.replace(/<video([^>]*class="party-video"[^>]*)>/gi, (_, attrs) => {
+  const clean = attrs.replace(/\s+(?:muted|defaultmuted|volume\s*=\s*[^\s>]+)/gi, '');
+  return `<video${clean} muted playsinline>`;
+});
+const videoAudioGuard = `<script data-video-audio-guard="v1">(()=>{const silence=()=>{document.querySelectorAll('video').forEach(v=>{v.defaultMuted=true;v.muted=true;v.volume=0;v.addEventListener('volumechange',()=>{if(!v.muted||v.volume!==0){v.muted=true;v.defaultMuted=true;v.volume=0}},false)})};silence();new MutationObserver(silence).observe(document.documentElement,{childList:true,subtree:true})})();</script>`;
+invitation = invitation.replace('</body>', videoAudioGuard + '</body>');
+
 const banner = '<div class="party-time-poster" data-party-time="time-poster-v4"><div class="poster-bunting" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="poster-kicker">FIESTA</span><div class="poster-rule"><span>✦</span></div><span class="poster-time">3:00 P.M.</span><span class="poster-note">A partir de las 3 de la tarde</span></div>';
 const marker = '<video class="party-video"';
 const videoPos = invitation.indexOf(marker);
