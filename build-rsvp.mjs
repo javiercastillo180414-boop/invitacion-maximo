@@ -18,13 +18,24 @@ invitation = invitation.replace(/<style data-party-time="[^"]*">[\s\S]*?<\/style
 invitation = invitation.replace(/<div class="party-time-card"[^>]*>[\s\S]*?<\/div>/g, '');
 invitation = invitation.replace(/<div class="party-time-text"[^>]*>[\s\S]*?<\/div>/g, '');
 
-// The requested party time is plain text: no card, border, box or background.
-const partyCss = `<style data-party-time="plain">
-.party-time-text{max-width:560px;margin:27px auto 30px;text-align:center}
-.party-time-text .time-kicker{display:block;color:#ef7950;font:800 .65rem Montserrat,Arial,sans-serif;letter-spacing:.2em}
-.party-time-text .time-value{display:block;margin:9px 0 5px;color:#315889;font:800 clamp(2rem,8vw,3rem) Montserrat,Arial,sans-serif}
-.party-time-text .time-note{display:block;color:#718095;font:600 .72rem/1.5 'Cormorant Garamond',Georgia,serif}
-@media(max-width:600px){.party-time-text{margin:22px 8px 26px}.party-time-text .time-value{font-size:1.8rem}}
+// Decorative poster integrated with the invitation's birthday section.
+const partyCss = `<style data-party-time="poster-v1">
+.party-time-poster{position:relative;width:min(100%,650px);margin:34px auto 34px;padding:30px 24px 28px;text-align:center;background:#fff;border:1px solid rgba(49,88,137,.12);border-radius:30px;box-shadow:0 18px 45px rgba(49,88,137,.14);overflow:hidden}
+.party-time-poster:before{content:'';position:absolute;left:0;right:0;top:0;height:8px;background:#f5c84b}
+.party-time-poster:after{content:'✦     ✦     ✦';position:absolute;left:0;right:0;bottom:10px;color:#b49a72;font-size:.62rem;letter-spacing:.18em}
+.party-bunting{display:flex;justify-content:center;gap:7px;margin:8px auto 21px}
+.party-bunting i{display:block;width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-top:34px solid #315889}
+.party-bunting i:nth-child(2n){border-top-color:#ef7950}
+.party-bunting i:nth-child(3n){border-top-color:#78b85b}
+.party-bunting i:nth-child(4n){border-top-color:#8a79bd}
+.party-bunting i:nth-child(5n){border-top-color:#f5c84b}
+.party-time-poster .poster-kicker{display:block;color:#ef7950;font:800 .67rem Montserrat,Arial,sans-serif;letter-spacing:.24em;margin-bottom:8px}
+.party-time-poster .poster-title{display:block;color:#315889;font:800 clamp(2.2rem,8vw,3.7rem) Montserrat,Arial,sans-serif;line-height:1;margin:0}
+.party-time-poster .poster-rule{display:flex;align-items:center;gap:10px;max-width:260px;margin:16px auto 12px;color:#b49a72}
+.party-time-poster .poster-rule:before,.party-time-poster .poster-rule:after{content:'';height:1px;background:#b49a72;flex:1}
+.party-time-poster .poster-time{display:block;color:#315889;font:800 clamp(2.8rem,11vw,4.7rem) Montserrat,Arial,sans-serif;line-height:1;margin:0}
+.party-time-poster .poster-note{display:block;margin-top:9px;color:#718095;font:600 .85rem/1.5 'Cormorant Garamond',Georgia,serif;letter-spacing:.04em}
+@media(max-width:600px){.party-time-poster{margin:26px auto 30px;padding:27px 14px 28px;border-radius:25px}.party-bunting{gap:4px;margin-bottom:18px}.party-bunting i{border-left-width:15px;border-right-width:15px;border-top-width:27px}.party-time-poster .poster-title{font-size:2rem}.party-time-poster .poster-time{font-size:3rem}}
 </style>`;
 
 invitation = invitation.replace('</style>', partyCss + '</style>');
@@ -35,7 +46,7 @@ if (!invitation.includes('data-rsvp-route="v2"')) {
   invitation = invitation.replace('</body>', rsvpScript + '</body>');
 }
 
-const banner = '<div class="party-time-text" data-party-time="plain"><span class="time-kicker">FIESTA</span><span class="time-value">3:00 P.M.</span><span class="time-note">A partir de las 3 de la tarde</span></div>';
+const banner = '<div class="party-time-poster" data-party-time="poster-v1"><div class="party-bunting" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="poster-kicker">AHORA SÍ... ¡A FESTEJAR!</span><span class="poster-title">¡CUMPLEAÑOS!</span><div class="poster-rule"><span>✦</span></div><span class="poster-time">3:00 P.M.</span><span class="poster-note">A partir de las 3 de la tarde</span></div>';
 const marker = '<video class="party-video"';
 const pos = invitation.indexOf(marker);
 if (pos >= 0) {
