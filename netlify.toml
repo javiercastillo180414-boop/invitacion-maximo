@@ -1,3 +1,7 @@
 [build]
   command = "node --check build-rsvp.mjs && node build-rsvp.mjs"
   publish = "."
+
+[[edge_functions]]
+  function = "invitation-preview"
+  path = "/"
