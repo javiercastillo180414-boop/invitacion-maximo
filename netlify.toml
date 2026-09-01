@@ -5,3 +5,7 @@
 [[edge_functions]]
   function = "invitation-preview"
   path = "/"
+
+[[edge_functions]]
+  function = "invitation-audio"
+  path = "/invitation.html"
