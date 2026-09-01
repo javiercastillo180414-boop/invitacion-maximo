@@ -9,6 +9,7 @@ invitation = invitation.replaceAll('MARTHA Y FERNANDO', 'MARTHA ACOSTA Y FERNAND
 invitation = invitation.replaceAll('A PARTIR DE LAS 2:00 P.M.', 'A PARTIR DE LAS 3:00 P.M.');
 invitation = invitation.replaceAll('2:00 P.M.', '3:00 P.M.');
 
+// Remove generated artifacts so every build starts clean.
 invitation = invitation.replace(/<style data-party-time="[^"]*">[\s\S]*?<\/style>/g, '');
 invitation = invitation.replace(/<div[^>]*class="[^"]*party-time-poster[^"]*"[^>]*>[\s\S]*?(?=<video class="party-video")/g, '');
 
@@ -32,17 +33,27 @@ const partyCss = `
 `;
 invitation = invitation.replace('</style>', partyCss + '</style>');
 
+// The top-level index.html owns background music. The invitation is inside an iframe,
+// so its own audio element must not exist; otherwise the first interaction can start a second track.
+invitation = invitation.replace(/<audio id="bgMusic"[\s\S]*?<\/audio>/g, '');
+
+const musicBridge = `<script data-music-bridge="v2">(()=>{const control=document.getElementById('musicControl');if(!control)return;const sync=playing=>{control.classList.toggle('playing',!!playing);control.textContent=playing?'❚❚':'♫';control.setAttribute('aria-label',playing?'Pausar música':'Reproducir música');control.title=playing?'Pausar música':'Reproducir música'};control.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.parent.postMessage({type:'maximo-music-toggle'},'*')});window.addEventListener('message',e=>{if(e.data?.type==='maximo-music-state')sync(e.data.playing)});window.parent.postMessage({type:'maximo-music-request-state'},'*')})();</script>`;
+
+// Replace the original invitation music controller script, leaving all other page behavior intact.
+invitation = invitation.replace(/<script>const modal=document\.getElementById\('modal'\);[\s\S]*?<\/script>/, musicBridge);
+
 const rsvpScript = `<script data-rsvp-route="v2">(()=>{const wire=()=>{document.querySelectorAll('.confirm button').forEach(btn=>{if(btn.dataset.rsvpRoute)return;btn.dataset.rsvpRoute='1';btn.type='button';btn.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();window.location.href='/rsvp.html'},true)})};wire();new MutationObserver(wire).observe(document.body,{childList:true,subtree:true})})();</script>`;
 if (!invitation.includes('data-rsvp-route="v2"')) invitation = invitation.replace('</body>', rsvpScript + '</body>');
-
-// Keep exactly one background-audio controller. Older builds could leave multiple audio elements/listeners behind.
-invitation = invitation.replace(/<script data-music-guard="[^"]*">[\s\S]*?<\/script>/g, '');
-const musicGuard = `<script data-music-guard="v1">(()=>{const audio=document.getElementById('bgMusic');if(!audio)return;document.querySelectorAll('audio#bgMusic').forEach((node,index)=>{if(index>0){node.pause();node.remove()}});if(window.__maximoMusicGuard)return;window.__maximoMusicGuard=true;let starting=false;const safePlay=async()=>{if(starting||!audio.paused)return;starting=true;try{await audio.play()}catch(e){}finally{starting=false}};document.addEventListener('play',event=>{if(event.target instanceof HTMLAudioElement&&event.target!==audio){event.target.pause()}},true);document.addEventListener('click',event=>{if(event.target===document.getElementById('musicControl'))return;if(!document.getElementById('modal')?.classList.contains('open'))safePlay()},{once:true});})();</script>`;
-invitation = invitation.replace('</body>', musicGuard + '</body>');
 
 const banner = '<div class="party-time-poster" data-party-time="time-poster-v4"><div class="poster-bunting" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="poster-kicker">FIESTA</span><div class="poster-rule"><span>✦</span></div><span class="poster-time">3:00 P.M.</span><span class="poster-note">A partir de las 3 de la tarde</span></div>';
 const marker = '<video class="party-video"';
 const videoPos = invitation.indexOf(marker);
-if (videoPos >= 0) { const videoEnd = invitation.indexOf('</video>', videoPos); if (videoEnd >= 0) { const insertAt = videoEnd + '</video>'.length; invitation = invitation.slice(0, insertAt) + banner + invitation.slice(insertAt); } }
+if (videoPos >= 0) {
+  const videoEnd = invitation.indexOf('</video>', videoPos);
+  if (videoEnd >= 0) {
+    const insertAt = videoEnd + '</video>'.length;
+    invitation = invitation.slice(0, insertAt) + banner + invitation.slice(insertAt);
+  }
+}
 
 fs.writeFileSync('invitation.html', invitation, 'utf8');
