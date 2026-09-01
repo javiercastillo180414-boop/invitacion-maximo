@@ -26,7 +26,7 @@ export default async (request, context) => {
 
     let page = await pageResponse.text();
     const text = LANG_TEXT.es;
-    const imageUrl = new URL("/assets/invitacion-maximo.jpg", url.origin).href;
+    const imageUrl = new URL("/assets/whatsapp-preview-final.jpg", url.origin).href;
     const canonical = `${url.origin}${url.pathname}${url.search}`;
 
     const tags = `
@@ -35,6 +35,9 @@ export default async (request, context) => {
 <meta property="og:title" content="${esc(text.title)}">
 <meta property="og:description" content="${esc(text.description)}">
 <meta property="og:image" content="${esc(imageUrl)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:alt" content="Invitación de Máximo">
 <meta property="og:url" content="${esc(canonical)}">
 <meta name="twitter:card" content="summary_large_image">
