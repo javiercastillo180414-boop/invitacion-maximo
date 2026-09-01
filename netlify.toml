@@ -1,5 +1,5 @@
 [build]
-  command = "node --check build-rsvp.mjs && node build-rsvp.mjs"
+  command = "node --check build-rsvp.mjs && node build-rsvp.mjs && node patch-index.mjs"
   publish = "."
 
 [[edge_functions]]
