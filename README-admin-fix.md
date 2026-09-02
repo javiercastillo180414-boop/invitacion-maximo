@@ -1,1 +1,0 @@
-Corrección del panel administrativo: los comentarios de los invitados se muestran en la tabla.
