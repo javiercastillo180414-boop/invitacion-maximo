@@ -1,1 +1,0 @@
-Admin panel correction: comments from confirmaciones_evento.comentarios are now displayed.
