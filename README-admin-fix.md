@@ -1,1 +1,0 @@
-Corrección del panel administrativo.
